@@ -16,44 +16,89 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root { --emerald-dark:#064e3b; --emerald:#047857; --mint:#10b981; --gold:#fbbf24; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     body {
-      font-family: 'Nunito', system-ui, sans-serif;
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       min-height: 100vh; min-height: 100dvh;
-      background: linear-gradient(180deg, #a7f3d0 0%, #d1fae5 38%, #ecfdf5 72%, #fef3c7 100%);
-      background-attachment: fixed;
+      background: #d1fae5;
       -webkit-tap-highlight-color: transparent;
       overflow-x: hidden;
     }
     input, textarea, .select-text { -webkit-user-select: text; user-select: text; }
-    .font-judul { font-family: 'Fredoka', sans-serif; }
+    .font-judul { font-family: 'Fredoka', 'Nunito', sans-serif; }
 
-    /* ---- LATAR CERIA KELAS 4 ---- */
-    .scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .sun { position:absolute; top:-70px; right:-70px; width:240px; height:240px; border-radius:50%;
-      background: radial-gradient(circle, #fef08a 0%, #fbbf24 55%, rgba(251,191,36,0) 72%); opacity:.9; }
-    .cloud { position:absolute; background:#fff; border-radius:999px; opacity:.88; animation: drift linear infinite; }
+    /* ================= LATAR: TAMAN SEKOLAH KELAS 4 ================= */
+    .scene {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+      background:
+        radial-gradient(1200px 500px at 85% -10%, rgba(254,240,138,.75), rgba(254,240,138,0) 60%),
+        linear-gradient(180deg, #7dd3fc 0%, #bae6fd 22%, #d1fae5 52%, #ecfdf5 76%, #fef9c3 100%);
+    }
+    /* pola titik seperti buku tulis */
+    .scene::before {
+      content:""; position:absolute; inset:0; opacity:.5;
+      background-image: radial-gradient(rgba(6,78,59,.14) 1.3px, transparent 1.4px);
+      background-size: 26px 26px;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 75%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 75%, transparent 100%);
+    }
+    .rays {
+      position:absolute; top:-210px; right:-210px; width:520px; height:520px; border-radius:50%;
+      background: repeating-conic-gradient(from 0deg, rgba(253,224,71,.38) 0deg 9deg, rgba(253,224,71,0) 9deg 22deg);
+      -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+      mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+      animation: putar 90s linear infinite;
+    }
+    .sun {
+      position:absolute; top:-80px; right:-80px; width:250px; height:250px; border-radius:50%;
+      background: radial-gradient(circle, #fef08a 0%, #fde047 40%, #fbbf24 58%, rgba(251,191,36,0) 72%);
+    }
+    @keyframes putar { to { transform: rotate(360deg); } }
+
+    .cloud { position:absolute; background:#fff; border-radius:999px; opacity:.92; animation: drift linear infinite; will-change: transform; }
     .cloud::before, .cloud::after { content:""; position:absolute; background:#fff; border-radius:50%; }
-    .cloud::before { width:55%; height:160%; left:12%; top:-85%; }
-    .cloud::after { width:40%; height:130%; right:14%; top:-60%; }
-    .c1 { width:130px; height:34px; top:12%; left:-160px; animation-duration:72s; }
-    .c2 { width:95px; height:26px; top:28%; left:-120px; animation-duration:96s; animation-delay:-40s; }
-    .c3 { width:160px; height:40px; top:6%; left:-200px; animation-duration:120s; animation-delay:-80s; }
-    @keyframes drift { to { transform: translateX(calc(100vw + 320px)); } }
-    .hills { position:absolute; left:0; right:0; bottom:0; height:26vh; min-height:120px; }
-    .doodle { position:absolute; color:var(--emerald-dark); opacity:.12; }
+    .cloud::before { width:55%; height:170%; left:12%; top:-90%; }
+    .cloud::after { width:40%; height:135%; right:14%; top:-62%; }
+    .c1 { width:130px; height:34px; top:11%; left:-180px; animation-duration:80s; }
+    .c2 { width:96px;  height:26px; top:25%; left:-140px; animation-duration:104s; animation-delay:-45s; }
+    .c3 { width:170px; height:42px; top:6%;  left:-220px; animation-duration:130s; animation-delay:-85s; }
+    @keyframes drift { to { transform: translateX(calc(100vw + 420px)); } }
 
+    /* balon udara kecil */
+    .balon { position:absolute; top:34%; left:7%; width:46px; opacity:.9; animation: ayun 7s ease-in-out infinite; transform-origin: 50% 0; }
+    @keyframes ayun { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+
+    /* perlengkapan sekolah melayang */
+    .alat { position:absolute; opacity:.9; animation: ambang 6s ease-in-out infinite; filter: drop-shadow(0 3px 0 rgba(6,78,59,.12)); }
+    .alat i { display:grid; place-items:center; width:3.4rem; height:3.4rem; border-radius:1.1rem; font-size:1.5rem;
+      background:#fff; border:3px solid var(--emerald-dark); color:var(--emerald); }
+    .alat.kuning i { background:var(--gold); color:var(--emerald-dark); }
+    .alat.mint i { background:#a7f3d0; color:var(--emerald-dark); }
+    .a1 { top:20%; left:3%;  transform:rotate(-12deg); animation-delay:-1s; }
+    .a2 { top:52%; left:2%;  transform:rotate(8deg);   animation-delay:-3s; }
+    .a3 { top:38%; right:3%; transform:rotate(10deg);  animation-delay:-2s; }
+    .a4 { top:64%; right:4%; transform:rotate(-8deg);  animation-delay:-4s; }
+    @keyframes ambang { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+
+    .bukit { position:absolute; left:0; right:0; bottom:0; width:100%; height:30vh; min-height:150px; max-height:300px; }
+
+    /* ================= KONTEN ================= */
     .wrap { position: relative; z-index: 1; min-height: 100vh; min-height: 100dvh; display:flex; flex-direction:column; }
 
     .judul-besar {
       font-family:'Fredoka',sans-serif; font-weight:700; color:var(--emerald-dark);
       font-size: clamp(2.4rem, 7vw, 4.4rem); line-height:1.02; letter-spacing:-.01em;
+      text-shadow: 0 3px 0 rgba(255,255,255,.75);
     }
     .angka-4 {
       display:inline-grid; place-items:center; width:1.15em; height:1.15em; margin-left:.12em;
       background:var(--gold); color:var(--emerald-dark); border-radius:.32em; border:.06em solid var(--emerald-dark);
-      box-shadow: .07em .07em 0 var(--emerald-dark); transform: rotate(-6deg);
+      box-shadow: .07em .07em 0 var(--emerald-dark); transform: rotate(-6deg); text-shadow:none;
     }
+    .panel-sambutan { background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      border: 2px solid rgba(6,78,59,.12); border-radius: 1.75rem; padding: 1.25rem; }
+    @media (min-width:1024px) { .panel-sambutan { padding: 1.75rem 2rem; } }
+
     .langkah { display:flex; gap:.75rem; align-items:flex-start; }
     .langkah i { width:2.4rem; height:2.4rem; flex:none; display:grid; place-items:center; border-radius:.9rem;
       background:#fff; color:var(--emerald); box-shadow:0 2px 0 rgba(6,78,59,.15); border:2px solid #a7f3d0; }
@@ -63,19 +108,28 @@
       font-size:16px; background:#fff; }
     .field:focus { outline:none; border-color:var(--mint); box-shadow:0 0 0 4px rgba(16,185,129,.22); }
     .btn-mulai { min-height:3.5rem; background:var(--gold); color:var(--emerald-dark); border:3px solid var(--emerald-dark);
-      box-shadow:0 5px 0 var(--emerald-dark); transition:transform .08s, box-shadow .08s; }
+      box-shadow:0 5px 0 var(--emerald-dark); transition:transform .08s, box-shadow .08s; touch-action: manipulation; }
     .btn-mulai:hover { background:#fde047; }
     .btn-mulai:active { transform:translateY(4px); box-shadow:0 1px 0 var(--emerald-dark); }
     .btn-mulai:disabled { opacity:.7; }
     :focus-visible { outline:3px solid var(--emerald-dark); outline-offset:2px; }
+    button, a, label { touch-action: manipulation; }
 
     .soal-html img { max-width:100%; max-height:280px; height:auto; border-radius:.75rem; margin:.5rem 0; }
     .soal-html table { border-collapse:collapse; margin:.5rem 0; max-width:100%; display:block; overflow-x:auto; }
     .soal-html td, .soal-html th { border:1px solid #cbd5e1; padding:.4rem .75rem; }
     .pad-aman { padding-left:max(1rem, env(safe-area-inset-left)); padding-right:max(1rem, env(safe-area-inset-right)); }
 
-    @media (max-height:520px) and (orientation:landscape) { .judul-besar { font-size:2rem; } }
-    @media (prefers-reduced-motion: reduce) { .cloud { animation:none; left:10%; } .btn-mulai { transition:none; } }
+    /* HP kecil: sembunyikan hiasan yang menutupi teks */
+    @media (max-width:639px) { .alat, .balon { display:none; } .rays { opacity:.7; } }
+    /* Tablet / iPad: hiasan lebih kecil */
+    @media (min-width:640px) and (max-width:1023px) { .alat i { width:2.8rem; height:2.8rem; font-size:1.2rem; } .a1,.a2 { left:1%; } .a3,.a4 { right:1%; } }
+    @media (max-height:520px) and (orientation:landscape) { .judul-besar { font-size:2rem; } .alat, .balon { display:none; } .bukit { height:22vh; } }
+    @media (prefers-reduced-motion: reduce) {
+      .cloud, .rays, .balon, .alat { animation:none; }
+      .cloud { left:10%; }
+      .btn-mulai { transition:none; }
+    }
   </style>
 </head>
 <body class="text-slate-800 select-none">
@@ -84,24 +138,62 @@
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbx-Ga0jRlHJq5_94O-NTf1j4gcNDbhU_7TWUYKp_Bp0zqf_RfbfGrjJ7fetRc3f3Xov/exec";
   </script>
 
-  <!-- LATAR -->
+  <!-- LATAR: TAMAN SEKOLAH -->
   <div class="scene" aria-hidden="true">
+    <div class="rays"></div>
     <div class="sun"></div>
     <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
-    <i class="doodle fa-solid fa-pencil text-5xl" style="top:22%;left:6%;transform:rotate(-30deg)"></i>
-    <i class="doodle fa-solid fa-book-open text-5xl" style="top:58%;left:3%;transform:rotate(-8deg)"></i>
-    <i class="doodle fa-solid fa-star text-4xl" style="top:40%;right:5%;transform:rotate(12deg)"></i>
-    <i class="doodle fa-solid fa-compass text-5xl" style="top:70%;right:8%;transform:rotate(25deg)"></i>
-    <svg class="hills" viewBox="0 0 1440 300" preserveAspectRatio="none">
-      <path d="M0 150 C 240 60 420 60 640 130 S 1100 220 1440 90 V300 H0Z" fill="#6ee7b7" opacity=".7"/>
-      <path d="M0 210 C 300 120 520 190 760 210 S 1200 130 1440 200 V300 H0Z" fill="#10b981"/>
-      <path d="M0 262 C 360 220 640 280 940 252 S 1300 230 1440 258 V300 H0Z" fill="#064e3b"/>
+
+    <!-- balon udara -->
+    <svg class="balon" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 2C14 2 4 14 4 28c0 14 12 26 20 32h12c8-6 20-18 20-32C56 14 46 2 30 2Z" fill="#fbbf24" stroke="#064e3b" stroke-width="3"/>
+      <path d="M30 2c-8 8-10 20-6 58M30 2c8 8 10 20 6 58" fill="none" stroke="#064e3b" stroke-width="2.5"/>
+      <path d="M12 16c6-6 12-8 18-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+      <path d="M24 60l-3 12M36 60l3 12" stroke="#064e3b" stroke-width="2.5"/>
+      <rect x="20" y="72" width="20" height="13" rx="3" fill="#10b981" stroke="#064e3b" stroke-width="3"/>
+    </svg>
+
+    <!-- perlengkapan sekolah -->
+    <div class="alat a1 kuning"><i class="fa-solid fa-pencil"></i></div>
+    <div class="alat a2"><i class="fa-solid fa-book-open"></i></div>
+    <div class="alat a3 mint"><i class="fa-solid fa-ruler-combined"></i></div>
+    <div class="alat a4 kuning"><i class="fa-solid fa-earth-asia"></i></div>
+
+    <!-- bukit, pohon, dan sekolah -->
+    <svg class="bukit" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 170 C 220 80 430 80 650 150 S 1120 240 1440 100 V320 H0Z" fill="#6ee7b7" opacity=".75"/>
+
+      <!-- sekolah -->
+      <g transform="translate(1010 92)">
+        <rect x="10" y="62" width="190" height="86" rx="6" fill="#fff" stroke="#064e3b" stroke-width="4"/>
+        <path d="M0 66 L105 12 L210 66Z" fill="#fbbf24" stroke="#064e3b" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="88" y="94" width="34" height="54" rx="5" fill="#047857" stroke="#064e3b" stroke-width="3"/>
+        <rect x="28" y="84" width="38" height="30" rx="4" fill="#bae6fd" stroke="#064e3b" stroke-width="3"/>
+        <rect x="144" y="84" width="38" height="30" rx="4" fill="#bae6fd" stroke="#064e3b" stroke-width="3"/>
+        <circle cx="105" cy="46" r="9" fill="#fff" stroke="#064e3b" stroke-width="3"/>
+        <path d="M105 12 V-18" stroke="#064e3b" stroke-width="4"/>
+        <path d="M105 -18 L135 -8 L105 2Z" fill="#ef4444" stroke="#064e3b" stroke-width="3" stroke-linejoin="round"/>
+      </g>
+
+      <path d="M0 226 C 300 132 540 206 780 226 S 1200 146 1440 216 V320 H0Z" fill="#10b981"/>
+
+      <!-- pohon -->
+      <g stroke="#064e3b" stroke-width="4">
+        <g transform="translate(130 150)"><rect x="-6" y="52" width="12" height="40" fill="#92400e"/><circle cx="0" cy="34" r="38" fill="#34d399"/><circle cx="-22" cy="52" r="24" fill="#34d399"/><circle cx="24" cy="54" r="24" fill="#34d399"/></g>
+        <g transform="translate(330 192) scale(.78)"><rect x="-6" y="52" width="12" height="40" fill="#92400e"/><circle cx="0" cy="34" r="38" fill="#6ee7b7"/><circle cx="-22" cy="52" r="24" fill="#6ee7b7"/><circle cx="24" cy="54" r="24" fill="#6ee7b7"/></g>
+        <g transform="translate(1330 138)"><rect x="-6" y="52" width="12" height="40" fill="#92400e"/><circle cx="0" cy="34" r="38" fill="#34d399"/><circle cx="-22" cy="52" r="24" fill="#34d399"/><circle cx="24" cy="54" r="24" fill="#34d399"/></g>
+      </g>
+
+      <!-- jalan menuju sekolah -->
+      <path d="M1115 240 C 1090 262 1010 270 900 284 S 700 300 640 320 H 820 C 900 305 1010 296 1120 286 C 1160 280 1175 258 1160 240Z" fill="#fde68a" stroke="#064e3b" stroke-width="3" opacity=".95"/>
+
+      <path d="M0 282 C 360 246 640 304 940 276 S 1300 252 1440 278 V320 H0Z" fill="#064e3b"/>
     </svg>
   </div>
 
   <div class="wrap">
 
-    <!-- HEADER -->
+    <!-- HEADER (tidak diubah) -->
     <header class="bg-gradient-to-r from-[#064e3b] via-[#047857] to-[#0f766e] text-white shadow-lg sticky top-0 z-30 border-b-4 border-[#fbbf24]">
       <div class="max-w-6xl mx-auto pad-aman py-2.5 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
@@ -135,12 +227,12 @@
     </header>
 
     <!-- HALAMAN 1: LANDING + LOGIN -->
-    <main id="sectionLogin" class="flex-1 flex items-center pad-aman py-6 sm:py-10">
-      <div class="w-full max-w-6xl mx-auto grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
+    <main id="sectionLogin" class="flex-1 flex items-center pad-aman py-6 sm:py-10 pb-24 sm:pb-28">
+      <div class="w-full max-w-6xl mx-auto grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-12 items-center">
 
         <!-- Sambutan -->
-        <section class="text-center lg:text-left">
-          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border-2 border-[#064e3b] text-[#064e3b] text-xs sm:text-sm font-extrabold shadow-sm">
+        <section class="panel-sambutan text-center lg:text-left">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border-2 border-[#064e3b] text-[#064e3b] text-xs sm:text-sm font-extrabold shadow-sm">
             <i class="fa-solid fa-graduation-cap text-[#047857]"></i> SD Negeri 4 Tugusari
           </span>
           <h2 class="judul-besar mt-4">Ujian Siswa<br />Kelas<span class="angka-4">4</span></h2>
